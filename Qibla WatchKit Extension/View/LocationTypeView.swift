@@ -13,7 +13,7 @@ struct LocationTypeView: View {
     var body: some View {
 		ScrollView {
 			VStack {
-				Text("Which city are you in?")
+				Text("Where are you?")
 					.fontWeight(.bold)
 					.multilineTextAlignment(.center)
 					.padding()

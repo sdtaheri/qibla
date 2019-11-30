@@ -10,16 +10,40 @@ import SwiftUI
 
 struct WelcomeView: View {
 
+	private var canAppFunction: Bool {
+		CLLocationManager.headingAvailable()
+	}
+
     var body: some View {
-		ScrollView {
-			VStack {
-				Text("Welcome!")
-					.fontWeight(.bold)
-					.padding()
-				Text("This app is intended to work only on \nWatch Series 5.")
-					.multilineTextAlignment(.center)
-				NavigationLink(destination: LocationTypeView()) {
-						Text("I'm good!")
+		Group {
+			if self.canAppFunction {
+				ScrollView {
+					VStack {
+						Text("Welcome!")
+							.fontWeight(.bold)
+							.padding()
+						Text("🕋")
+							.font(.system(size: 60))
+
+						NavigationLink(destination: LocationTypeView()) {
+							Text("Let's find Qibla!")
+						}
+						.padding(.vertical, -28)
+					}
+				}
+			} else {
+				ScrollView {
+					VStack {
+						Text("Sorry!")
+							.fontWeight(.bold)
+							.padding()
+						Text("This app is intended to only work on \nWatch Series 5.")
+							.multilineTextAlignment(.center)
+
+						Text("Your device does not have a Compass.")
+							.multilineTextAlignment(.center)
+							.padding()
+					}
 				}
 			}
 		}
