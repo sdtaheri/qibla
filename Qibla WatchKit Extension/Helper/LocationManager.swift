@@ -12,48 +12,53 @@ import Combine
 
 final class LocationManager: NSObject, ObservableObject {
 
+	@Published private(set) var authorization: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
+    @Published private(set) var lastLocation: CLLocation?
+    @Published private(set) var lastHeading: CLHeading?
+
+    private let manager = CLLocationManager()
+
+	private let userSettings = UserSettings()
+
     override init() {
         super.init()
-        self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-		self.locationManager.headingOrientation = .portrait
-        self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.requestLocation()
-		self.locationManager.startUpdatingHeading()
+        self.manager.delegate = self
+        self.manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
     }
 
-    @Published var locationStatus: CLAuthorizationStatus? {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+	func requestAuthorization() {
+        manager.requestWhenInUseAuthorization()
+	}
 
-    @Published var lastLocation: CLLocation? {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+	func requestLocation() {
+		manager.requestLocation()
+	}
 
-    @Published var lastHeading: CLHeading? {
-        willSet {
-            objectWillChange.send()
-        }
-    }
+	func startUpdatingHeading() {
+		manager.startUpdatingHeading()
+	}
 
-    let objectWillChange = PassthroughSubject<Void, Never>()
-
-    private let locationManager = CLLocationManager()
+	func stopUpdatingHeading() {
+		manager.stopUpdatingHeading()
+	}
 }
 
 extension LocationManager: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        self.locationStatus = status
+        self.authorization = status
+		switch status {
+		case .authorizedAlways, .authorizedWhenInUse:
+			requestLocation()
+		default:
+			break
+		}
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         self.lastLocation = location
+		userSettings.userCoordinate = location.coordinate
     }
 
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

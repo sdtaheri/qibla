@@ -9,14 +9,24 @@
 import SwiftUI
 
 struct ContentView: View {
-		
+
+	@ObservedObject private var settings = UserSettings()
+
     var body: some View {
-		Text("Hello World")
+		Group {
+			if settings.didShowWelcomeScreen && settings.userCoordinate != nil {
+				CompassView(qiblaCalculator: QiblaCalulator(coordinate: settings.userCoordinate!))
+					.environmentObject(LocationManager())
+			} else {
+				WelcomeView()
+			}
+		}
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+			.environmentObject(UserSettings())
     }
 }
