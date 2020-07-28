@@ -12,7 +12,7 @@ struct ContentView: View {
 
 	@ObservedObject private var settings = UserSettings()
 
-    var body: some View {
+	var body: some View {
 		Group {
 			if settings.didShowWelcomeScreen && settings.userCoordinate != nil {
 				CompassView(qiblaCalculator: QiblaCalulator(coordinate: settings.userCoordinate!))
@@ -21,12 +21,12 @@ struct ContentView: View {
 				WelcomeView()
 			}
 		}
-    }
+	}
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+	static var previews: some View {
+		ContentView()
 			.environmentObject(UserSettings())
-    }
+	}
 }

@@ -17,7 +17,6 @@ struct GPSLocationView: View {
 				locationManager.authorization == .authorizedWhenInUse {
 				if locationManager.lastLocation != nil {
 					CompassView(qiblaCalculator: QiblaCalulator(coordinate: locationManager.lastLocation!.coordinate))
-						.environmentObject(locationManager)
 				} else {
 					Text("It's authorized: Nothing for now")
 				}

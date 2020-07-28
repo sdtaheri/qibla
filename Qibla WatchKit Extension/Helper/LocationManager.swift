@@ -6,7 +6,6 @@
 //  Copyright © 2019 Saeed Taheri. All rights reserved.
 //
 
-import Foundation
 import CoreLocation
 import Combine
 
