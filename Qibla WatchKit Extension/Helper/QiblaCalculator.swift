@@ -9,15 +9,20 @@
 import Foundation
 import CoreLocation
 
-class QiblaCalulator: ObservableObject {
+final class QiblaCalulator: ObservableObject {
 
-	private let desiredCoordinate: CLLocationCoordinate2D
+	private var desiredCoordinate: CLLocationCoordinate2D
 	private let meccaCoordinate = CLLocationCoordinate2D(latitude: 21.422504,
 														 longitude: 39.826195)
 
 	@Published private(set) var direction: CLLocationDegrees = .zero
 
 	init(coordinate: CLLocationCoordinate2D) {
+		self.desiredCoordinate = coordinate
+		self.direction = qiblaDirection()
+	}
+
+	func updateCoordinate(_ coordinate: CLLocationCoordinate2D) {
 		self.desiredCoordinate = coordinate
 		self.direction = qiblaDirection()
 	}

@@ -1,25 +1,25 @@
 {
   "images" : [
     {
-      "filename" : "extra-large38mm@2x.png",
+      "filename" : "Qibla copy 2.png",
       "idiom" : "watch",
       "scale" : "2x",
       "screen-width" : "<=145"
     },
     {
-      "filename" : "extra-large40mm@2x.png",
+      "filename" : "Qibla copy-1.png",
       "idiom" : "watch",
       "scale" : "2x",
       "screen-width" : ">161"
     },
     {
-      "filename" : "extra-large42mm@2x.png",
+      "filename" : "Qibla copy.png",
       "idiom" : "watch",
       "scale" : "2x",
       "screen-width" : ">145"
     },
     {
-      "filename" : "extra-large44mm@2x.png",
+      "filename" : "Qibla.png",
       "idiom" : "watch",
       "scale" : "2x",
       "screen-width" : ">183"

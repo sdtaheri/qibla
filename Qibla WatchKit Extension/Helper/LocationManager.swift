@@ -14,6 +14,7 @@ final class LocationManager: NSObject, ObservableObject {
 	@Published private(set) var authorization: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
     @Published private(set) var lastLocation: CLLocation?
     @Published private(set) var lastHeading: CLHeading?
+	@Published private(set) var lastCityName: String?
 
     private let manager = CLLocationManager()
 
@@ -30,7 +31,10 @@ final class LocationManager: NSObject, ObservableObject {
 	}
 
 	func requestLocation() {
-		manager.requestLocation()
+		if authorization == .authorizedWhenInUse
+			|| authorization == .authorizedAlways {
+			manager.requestLocation()
+		}
 	}
 
 	func startUpdatingHeading() {
@@ -58,6 +62,12 @@ extension LocationManager: CLLocationManagerDelegate {
         guard let location = locations.last else { return }
         self.lastLocation = location
 		userSettings.userCoordinate = location.coordinate
+
+		CLGeocoder().reverseGeocodeLocation(location) { [weak self] placemarks, error in
+			if let placemark = placemarks?.last {
+				self?.lastCityName = placemark.locality
+			}
+		}
     }
 
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {

@@ -14,19 +14,29 @@ struct CompassView: View {
 	@EnvironmentObject private var locationManager: LocationManager
 
 	private let markers = Marker.generate()
-	private let lineWidth: CGFloat = 1.5
+	private let lineWidth: CGFloat = 1.2
 
-    var body: some View {
+	var body: some View {
 		GeometryReader { proxy in
-			ZStack {
-				self.makeArabesqueCircle(with: proxy)
-				self.makeQiblaNeedle(with: proxy)
-				self.makeNorthNeedle(with: proxy)
+			ScrollView {
+				VStack {
+					ZStack {
+						self.makeArabesqueCircle(with: proxy)
+						self.makeQiblaNeedle(with: proxy)
+						self.makeNorthNeedle(with: proxy)
+					}
+					.padding(.top)
+					.rotationEffect(.degrees((locationManager.lastHeading?.trueHeading ?? 0) * -1.0))
+
+					locationManager.lastCityName.map {
+						Text($0)
+					}
+				}
 			}
 		}
-		.rotationEffect(.degrees((locationManager.lastHeading?.trueHeading ?? 0) * -1.0))
 		.onAppear {
 			self.locationManager.startUpdatingHeading()
+			self.locationManager.requestLocation()
 		}
 		.onDisappear {
 			self.locationManager.stopUpdatingHeading()
@@ -36,7 +46,7 @@ struct CompassView: View {
 	@ViewBuilder
 	private func makeArabesqueCircle(with proxy: GeometryProxy) -> some View {
 		Circle()
-			.stroke(lineWidth: lineWidth)
+			.stroke(lineWidth: lineWidth / 2.0)
 			.foregroundColor(.gray)
 			.padding(4)
 		ForEach(markers, id: \.self) { marker in
@@ -48,35 +58,45 @@ struct CompassView: View {
 					   height: min(proxy.size.width, proxy.size.height))
 		}
 		Circle()
-			.stroke(lineWidth: lineWidth)
+			.stroke(lineWidth: lineWidth / 2.0)
 			.foregroundColor(.gray)
 			.frame(width: 0.666 * min(proxy.size.width, proxy.size.height) - 4 * lineWidth - 36,
 				   height: 0.666 * min(proxy.size.width, proxy.size.height) - 4 * lineWidth - 36)
 	}
 
 	private func makeQiblaNeedle(with proxy: GeometryProxy) -> some View {
-		QiblaNeedle()
-			.frame(width: proxy.size.width / 2.2 * (1.0 / 3.0),
-				   height: proxy.size.width / 2.2)
-			.offset(x: 0, y: -proxy.size.width / 6.5)
-			.foregroundColor(Color.green)
-			.shadow(radius: 1)
-			.rotationEffect(.degrees(qiblaCalculator.direction))
+		ZStack {
+			QiblaNeedle()
+				.frame(width: proxy.size.width / 2.2 * (1.0 / 3.0),
+					   height: proxy.size.width / 2.2)
+				.offset(x: 0, y: -proxy.size.width / 6.5)
+				.foregroundColor(Color.green)
+				.shadow(color: Color.white.opacity(0.5), radius: 2)
+
+			Kaaba()
+				.foregroundColor(.black)
+				.frame(width: proxy.size.width / 3.0 * (1.0 / 3.0),
+					   height: proxy.size.width / 3.0 * (1.0 / 3.0))
+				.offset(x: 0, y: -proxy.size.width / 5.5)
+
+		}
+		.rotationEffect(.degrees(qiblaCalculator.direction))
 	}
 
 	@ViewBuilder
 	private func makeNorthNeedle(with proxy: GeometryProxy) -> some View {
 		Text("N")
-			.padding(6)
+			.padding()
 			.background(Color.black)
+			.clipShape(Circle())
 			.offset(x: 0, y: -min(proxy.size.width, proxy.size.height) / 2.0)
 
 		Triangle()
 			.foregroundColor(Color.red)
-			.frame(width: proxy.size.width / 18, height: proxy.size.width / 2.2)
+			.frame(width: proxy.size.width / 18, height: proxy.size.width / 2.3)
 			.cornerRadius(proxy.size.width / 36)
 			.offset(x: 0, y: -proxy.size.width / 5.0)
-			.shadow(radius: 2)
+			.shadow(color: Color.white.opacity(0.5), radius: 3)
 
 		Circle()
 			.frame(width: proxy.size.width / 50, height: proxy.size.width / 50)
@@ -84,42 +104,20 @@ struct CompassView: View {
 	}
 }
 
-@available(watchOSApplicationExtension 7.0, *)
 struct CompassView_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		Group {
-			Group {
-				NavigationView {
-					CompassView(
-						qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D(latitude: 35.7374,
-																						   longitude: 51.4057))
-					)
-				}
-				.environmentObject(LocationManager())
-				NavigationView {
-					CompassView(
-						qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D(latitude: 35.7374,
-																						   longitude: 51.4057))
-					)
-				}
-				.environmentObject(LocationManager())
-			}
-			Group {
-				NavigationView {
-					CompassView(
-						qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D(latitude: 35.7374,
-																						   longitude: 51.4057))
-					)
-				}
-				.environmentObject(LocationManager())
-				NavigationView {
-					CompassView(
-						qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D(latitude: 35.7374,
-																						   longitude: 51.4057))
-					)
-				}
-				.environmentObject(LocationManager())
-			}
+			CompassView(
+				qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D(latitude: 35.7374,
+																				   longitude: 51.4057))
+			)
+			.previewDevice("Apple Watch Series 5 - 44mm")
+			CompassView(
+				qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D(latitude: 35.7374,
+																				   longitude: 51.4057))
+			)
+			.previewDevice("Apple Watch Series 5 - 40mm")
 		}
-    }
+		.environmentObject(LocationManager())
+	}
 }

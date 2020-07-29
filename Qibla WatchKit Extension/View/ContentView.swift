@@ -14,6 +14,7 @@ struct ContentView: View {
 
 	var body: some View {
 		Group {
+			//TODO: This is wrong
 			if settings.didShowWelcomeScreen && settings.userCoordinate != nil {
 				CompassView(qiblaCalculator: QiblaCalulator(coordinate: settings.userCoordinate!))
 					.environmentObject(LocationManager())

@@ -18,10 +18,10 @@ struct CompassMarkerView: View {
 			Capsule()
 				.frame(width: 1.5, height: markerHeight)
 			Circle()
-				.frame(width: lineWidth * 2, height: lineWidth * 2)
+				.frame(width: lineWidth, height: lineWidth)
 			Arabesque()
 				.stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
-				.frame(width: markerHeight / 1.2, height: markerHeight / 1.2)
+				.frame(width: markerHeight / 1.6, height: markerHeight / 1.4)
 			Spacer()
 		}
 		.rotationEffect(marker.angle)
