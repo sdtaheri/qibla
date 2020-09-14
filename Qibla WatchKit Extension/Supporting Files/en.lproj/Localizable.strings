@@ -1,0 +1,24 @@
+/* 
+  Localizable.strings
+  Qibla
+
+  Created by Saeed Taheri on 9/13/20.
+  
+*/
+
+"qibla" = "Qibla";
+"welcome" = "Welcome!";
+"lets_find_qibla" = "Let's find Qibla!";
+"sorry" = "Sorry!";
+"works_only_on_series_5" = "This app is intended to only work on \nWatch Series 5.";
+"no_compass_available" = "Your device does not have a Compass.";
+"where_are_you" = "Where are you?";
+"use_gps" = "Use GPS";
+"choose_manually" = "Choose Manually";
+"please_wait" = "Please wait…";
+"plase_start_over" = "Please go back and start over";
+"location_permission_denied" = "Location Access Denied";
+"location_permission_denied_description" = "Please go back and choose another method or provide permissions in device settings.";
+"location_permission_restricted" = "Location Access Restricted";
+"setup_again" = "Setup Again";
+"countries" = "Countries";

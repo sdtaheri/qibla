@@ -19,15 +19,15 @@ final class QiblaCalulator: ObservableObject {
 
 	init(coordinate: CLLocationCoordinate2D) {
 		self.desiredCoordinate = coordinate
-		self.direction = qiblaDirection()
+		self.direction = computeQiblaDirection()
 	}
 
 	func updateCoordinate(_ coordinate: CLLocationCoordinate2D) {
 		self.desiredCoordinate = coordinate
-		self.direction = qiblaDirection()
+		self.direction = computeQiblaDirection()
 	}
 
-	private func qiblaDirection() -> CLLocationDegrees {
+	private func computeQiblaDirection() -> CLLocationDegrees {
 		let delta = (meccaCoordinate.longitude - desiredCoordinate.longitude).radian
 
 		let y = sin(delta) * cos(meccaCoordinate.latitude.radian)

@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct CompassView: View {
-
 	@ObservedObject private(set) var qiblaCalculator: QiblaCalulator
 	@EnvironmentObject private var locationManager: LocationManager
 
@@ -18,59 +17,49 @@ struct CompassView: View {
 
 	var body: some View {
 		GeometryReader { proxy in
-			ScrollView {
-				VStack {
-					ZStack {
-						self.makeArabesqueCircle(with: proxy)
-						self.makeQiblaNeedle(with: proxy)
-						self.makeNorthNeedle(with: proxy)
-					}
-					.padding(.top)
-					.rotationEffect(.degrees((locationManager.lastHeading?.trueHeading ?? 0) * -1.0))
-
-					locationManager.lastCityName.map {
-						Text($0)
-					}
+			VStack {
+				ZStack {
+					makeArabesqueCircle(with: proxy)
+					makeQiblaNeedle(with: proxy)
+					makeNorthNeedle(with: proxy)
 				}
+				.padding(.top)
+				.rotationEffect(.degrees((locationManager.lastHeading?.trueHeading ?? 0) * -1.0))
 			}
-		}
-		.onAppear {
-			self.locationManager.startUpdatingHeading()
-			self.locationManager.requestLocation()
-		}
-		.onDisappear {
-			self.locationManager.stopUpdatingHeading()
 		}
 	}
 
 	@ViewBuilder
 	private func makeArabesqueCircle(with proxy: GeometryProxy) -> some View {
 		Circle()
-			.stroke(lineWidth: lineWidth / 2.0)
-			.foregroundColor(.gray)
+			.stroke(Color.white,
+				style: StrokeStyle(
+					lineWidth: lineWidth / 2.0,
+					lineCap: .butt,
+					lineJoin: .miter,
+					miterLimit: 0,
+					dash: [],
+					dashPhase: 0
+				)
+			)
 			.padding(4)
 		ForEach(markers, id: \.self) { marker in
 			CompassMarkerView(marker: marker,
 							  markerHeight: proxy.size.width / 16.0,
 							  lineWidth: lineWidth)
-				.padding(.vertical, 12)
+				.padding(.vertical, 10)
 				.frame(width: min(proxy.size.width, proxy.size.height),
 					   height: min(proxy.size.width, proxy.size.height))
 		}
-		Circle()
-			.stroke(lineWidth: lineWidth / 2.0)
-			.foregroundColor(.gray)
-			.frame(width: 0.666 * min(proxy.size.width, proxy.size.height) - 4 * lineWidth - 36,
-				   height: 0.666 * min(proxy.size.width, proxy.size.height) - 4 * lineWidth - 36)
 	}
 
 	private func makeQiblaNeedle(with proxy: GeometryProxy) -> some View {
 		ZStack {
 			QiblaNeedle()
-				.frame(width: proxy.size.width / 2.2 * (1.0 / 3.0),
-					   height: proxy.size.width / 2.2)
-				.offset(x: 0, y: -proxy.size.width / 6.5)
-				.foregroundColor(Color.green)
+				.frame(width: proxy.size.width / 2.05 * (1.0 / 3.0),
+					   height: proxy.size.width / 2.05)
+				.offset(x: 0, y: -proxy.size.width / 6.1)
+				.foregroundColor(Color.accentColor)
 				.shadow(color: Color.white.opacity(0.5), radius: 2)
 
 			Kaaba()
@@ -78,6 +67,10 @@ struct CompassView: View {
 				.frame(width: proxy.size.width / 3.0 * (1.0 / 3.0),
 					   height: proxy.size.width / 3.0 * (1.0 / 3.0))
 				.offset(x: 0, y: -proxy.size.width / 5.5)
+
+			Text("\(Int(qiblaCalculator.direction))")
+				.font(.footnote)
+				.offset(x: 0, y: -proxy.size.width / 2.1)
 
 		}
 		.rotationEffect(.degrees(qiblaCalculator.direction))
@@ -93,9 +86,9 @@ struct CompassView: View {
 
 		Triangle()
 			.foregroundColor(Color.red)
-			.frame(width: proxy.size.width / 18, height: proxy.size.width / 2.3)
+			.frame(width: proxy.size.width / 18, height: proxy.size.width / 2.2)
 			.cornerRadius(proxy.size.width / 36)
-			.offset(x: 0, y: -proxy.size.width / 5.0)
+			.offset(x: 0, y: -proxy.size.width / 5.1)
 			.shadow(color: Color.white.opacity(0.5), radius: 3)
 
 		Circle()
@@ -108,16 +101,14 @@ struct CompassView_Previews: PreviewProvider {
 	static var previews: some View {
 		Group {
 			CompassView(
-				qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D(latitude: 35.7374,
-																				   longitude: 51.4057))
+				qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D.dummy)
 			)
 			.previewDevice("Apple Watch Series 5 - 44mm")
 			CompassView(
-				qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D(latitude: 35.7374,
-																				   longitude: 51.4057))
+				qiblaCalculator: QiblaCalulator(coordinate: CLLocationCoordinate2D.dummy)
 			)
 			.previewDevice("Apple Watch Series 5 - 40mm")
 		}
-		.environmentObject(LocationManager())
+		.environmentObject(LocationManager.shared)
 	}
 }

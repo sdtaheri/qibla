@@ -14,14 +14,18 @@ struct CompassMarkerView: View {
 	let lineWidth: CGFloat
 
 	var body: some View {
-		VStack(spacing: 4) {
+		VStack(spacing: 2) {
 			Capsule()
-				.frame(width: 1.5, height: markerHeight)
+				.fill(LinearGradient(gradient: Gradient(colors: [Color.white, Color.blue]), startPoint: .top, endPoint: .bottom))
+				.frame(width: lineWidth, height: markerHeight * 0.8)
 			Circle()
 				.frame(width: lineWidth, height: lineWidth)
+				.foregroundColor(.blue)
 			Arabesque()
 				.stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
-				.frame(width: markerHeight / 1.6, height: markerHeight / 1.4)
+				.frame(width: markerHeight, height: markerHeight)
+				.rotationEffect(.degrees(180))
+				.foregroundColor(.blue)
 			Spacer()
 		}
 		.rotationEffect(marker.angle)

@@ -7,34 +7,41 @@
 //
 
 import CoreLocation
-import Combine
+import SwiftUI
 
 final class LocationManager: NSObject, ObservableObject {
 
-	@Published private(set) var authorization: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
-    @Published private(set) var lastLocation: CLLocation?
-    @Published private(set) var lastHeading: CLHeading?
-	@Published private(set) var lastCityName: String?
+	@Published private(set) var authorization: CLAuthorizationStatus = .notDetermined
+	@Published private(set) var lastLocation: CLLocation?
+	@Published private(set) var lastHeading: CLHeading?
 
-    private let manager = CLLocationManager()
+	private let manager = CLLocationManager()
 
-	private let userSettings = UserSettings()
+	@AppStorage(StorageKey.userLatitude) private var userLatitude: Double?
+	@AppStorage(StorageKey.userLongitude) private var userLongitude: Double?
+	@AppStorage(StorageKey.userCityName) private var userCityName: String?
+	@AppStorage(StorageKey.userDidChooseGPS) private var userDidChooseGPS: Bool = false
 
-    override init() {
-        super.init()
-        self.manager.delegate = self
-        self.manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
-    }
+	static let shared = LocationManager()
+
+	override private init() {
+		super.init()
+		self.manager.delegate = self
+		self.manager.desiredAccuracy = kCLLocationAccuracyReduced
+	}
 
 	func requestAuthorization() {
-        manager.requestWhenInUseAuthorization()
+		manager.requestWhenInUseAuthorization()
 	}
 
 	func requestLocation() {
-		if authorization == .authorizedWhenInUse
-			|| authorization == .authorizedAlways {
+		if userDidChooseGPS {
 			manager.requestLocation()
 		}
+	}
+
+	func stopRequestingLocation() {
+		manager.stopUpdatingLocation()
 	}
 
 	func startUpdatingHeading() {
@@ -44,31 +51,36 @@ final class LocationManager: NSObject, ObservableObject {
 	func stopUpdatingHeading() {
 		manager.stopUpdatingHeading()
 	}
+
+	private func fetchCityName(for location: CLLocation) {
+		CLGeocoder().reverseGeocodeLocation(location) { [weak self] placemarks, error in
+			if let placemark = placemarks?.last {
+				self?.userCityName = placemark.locality
+			}
+		}
+	}
 }
 
 extension LocationManager: CLLocationManagerDelegate {
 
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        self.authorization = status
+	func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+		self.authorization = status
 		switch status {
 		case .authorizedAlways, .authorizedWhenInUse:
 			requestLocation()
 		default:
 			break
 		}
-    }
+	}
 
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-        self.lastLocation = location
-		userSettings.userCoordinate = location.coordinate
+	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+		guard let location = locations.last else { return }
+		lastLocation = location
+		userLatitude = location.coordinate.latitude
+		userLongitude = location.coordinate.longitude
 
-		CLGeocoder().reverseGeocodeLocation(location) { [weak self] placemarks, error in
-			if let placemark = placemarks?.last {
-				self?.lastCityName = placemark.locality
-			}
-		}
-    }
+		fetchCityName(for: location)
+	}
 
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
 		print(error.localizedDescription)
@@ -78,4 +90,9 @@ extension LocationManager: CLLocationManagerDelegate {
 		self.lastHeading = newHeading
 		print(newHeading)
 	}
+}
+
+extension CLLocationCoordinate2D {
+	static let dummy = CLLocationCoordinate2D(latitude: 35.7374,
+											  longitude: 51.4057)
 }
