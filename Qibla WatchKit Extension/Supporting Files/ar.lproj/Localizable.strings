@@ -1,0 +1,24 @@
+/* 
+  Localizable.strings
+  Qibla
+
+  Created by Saeed Taheri on 9/13/20.
+  
+*/
+
+"qibla" = "القبلة";
+"welcome" = "مرحبا!";
+"lets_find_qibla" = "بحث عن اتجاه القبلة";
+"sorry" = "آسف!";
+"works_only_on_series_5" = "يعمل هذا التطبيق على Apple Watch Series 5 أو 6.";
+"no_compass_available" = "جهازك ليس به بوصلة.";
+"where_are_you" = "أين أنت؟";
+"use_gps" = "استخدام GPS";
+"choose_manually" = "اختار يدويا";
+"please_wait" = "فضلا انتظر لحظة…";
+"plase_start_over" = "يرجى العودة والبدء من جديد";
+"location_permission_denied" = "تم رفض الوصول إلى الموقع";
+"location_permission_denied_description" = "يرجى الرجوع واختيار طريقة أخرى أو تقديم أذونات في إعدادات الجهاز.";
+"location_permission_restricted" = "الوصول إلى الموقع مقيد";
+"setup_again" = "الإعداد مرة أخرى";
+"countries" = "بلد";
