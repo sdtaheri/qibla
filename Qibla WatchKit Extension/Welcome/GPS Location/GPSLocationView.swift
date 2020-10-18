@@ -22,7 +22,7 @@ struct GPSLocationView: View {
 			if locationManager.authorization == .authorizedAlways ||
 				locationManager.authorization == .authorizedWhenInUse ||
 				locationManager.authorization == .notDetermined {
-				Text("please_wait")
+				ProgressView("please_wait")
 			} else if locationManager.authorization == .denied {
 				ScrollView {
 					VStack(spacing: 8) {
