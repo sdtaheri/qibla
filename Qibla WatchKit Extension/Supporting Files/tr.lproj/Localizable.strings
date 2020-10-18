@@ -1,0 +1,24 @@
+/* 
+  Localizable.strings
+  Qibla
+
+  Created by Saeed Taheri on 9/13/20.
+  
+*/
+
+"qibla" = "Kıble";
+"welcome" = "Hoşgeldiniz!";
+"lets_find_qibla" = "Kıbleyi bulalım!";
+"sorry" = "Üzgünüm!";
+"works_only_on_series_5" = "Bu uygulama Watch Series 5 veya 6'da çalışır.";
+"no_compass_available" = "Cihazınızda Pusula yok.";
+"where_are_you" = "Neredesin?";
+"use_gps" = "GPS kullan";
+"choose_manually" = "Manuel Olarak Seçin";
+"please_wait" = "Lütfen bekle…";
+"plase_start_over" = "Lütfen geri dön ve baştan başla";
+"location_permission_denied" = "Konum Erişimi Reddedildi";
+"location_permission_denied_description" = "Lütfen geri dönün ve başka bir yöntem seçin veya cihaz ayarlarında izin verin.";
+"location_permission_restricted" = "Konum Erişimi Sınırlı";
+"setup_again" = "Yeniden Kur";
+"countries" = "Ülkeler";
