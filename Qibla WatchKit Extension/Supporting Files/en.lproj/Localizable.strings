@@ -10,8 +10,8 @@
 "welcome" = "Welcome!";
 "lets_find_qibla" = "Let's find Qibla!";
 "sorry" = "Sorry!";
-"works_only_on_series_5" = "This app is intended to only work on \nWatch Series 5.";
-"no_compass_available" = "Your device does not have a Compass.";
+"works_only_on_series_5" = "This app works on \nWatch Series 5 or 6.";
+"no_compass_available" = "Your device doesn't have a Compass.";
 "where_are_you" = "Where are you?";
 "use_gps" = "Use GPS";
 "choose_manually" = "Choose Manually";

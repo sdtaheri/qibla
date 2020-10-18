@@ -23,7 +23,7 @@ struct WelcomeView: View {
 	}
 
 	var body: some View {
-		if canAppFunction {
+		if !canAppFunction {
 			ScrollView {
 				VStack {
 					Text("welcome")
@@ -65,10 +65,13 @@ struct WelcomeView: View {
 		} else {
 			ScrollView {
 				VStack(spacing: 16) {
-					Text("sorry")
-						.fontWeight(.bold)
-					Text("works_only_on_series_5")
+					Label("sorry", systemImage: "hand.raised")
+						.font(Font.title3.bold().smallCaps())
+						.foregroundColor(.accentColor)
 					Text("no_compass_available")
+						.font(Font.caption.bold())
+						.foregroundColor(.red)
+					Text("works_only_on_series_5")
 				}
 				.multilineTextAlignment(.center)
 			}
@@ -83,6 +86,8 @@ struct WelcomeView_Previews: PreviewProvider {
 				.previewDevice("Apple Watch Series 5 - 40mm")
 			WelcomeView(isPresented: .constant(true))
 				.previewDevice("Apple Watch Series 5 - 44mm")
+			WelcomeView(isPresented: .constant(true))
+				.previewDevice("Apple Watch Series 3 - 42mm")
 		}
 	}
 }
