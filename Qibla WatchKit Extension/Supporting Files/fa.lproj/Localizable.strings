@@ -1,0 +1,24 @@
+/* 
+  Localizable.strings
+  Qibla
+
+  Created by Saeed Taheri on 9/13/20.
+  
+*/
+
+"qibla" = "قبله";
+"welcome" = "خوش آمدید!";
+"lets_find_qibla" = "یافتن جهت قبله";
+"sorry" = "متأسفم!";
+"works_only_on_series_5" = "این اپ فقط روی \nاپل واچ سری ۵ یا ۶ کار می‌کند.";
+"no_compass_available" = "دستگاه شما قطب‌نما ندارد.";
+"where_are_you" = "کجا هستید؟";
+"use_gps" = "استفاده از GPS";
+"choose_manually" = "انتخاب دستی";
+"please_wait" = "لطفاً صبر کنید…";
+"plase_start_over" = "لطفاً به صفحه قبل برگردید و دوباره شروع کنید.";
+"location_permission_denied" = "اجازه دسترسی به موقعیت مکانی وجود ندارد.";
+"location_permission_denied_description" = "لطفاً به صفحه قبل برگردید و روش دیگری را برای موقعیت‌یابی امتحان کنید یا اجازه دسترسی به موقعیت مکانی را در تنظیمات صادر کنید.";
+"location_permission_restricted" = "دسترسی به موقعیت مکانی محدود شده است.";
+"setup_again" = "تنظیم دوباره";
+"countries" = "کشورها";

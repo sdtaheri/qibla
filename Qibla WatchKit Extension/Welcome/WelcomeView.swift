@@ -23,7 +23,7 @@ struct WelcomeView: View {
 	}
 
 	var body: some View {
-		if !canAppFunction {
+		if canAppFunction {
 			ScrollView {
 				VStack {
 					Text("welcome")
