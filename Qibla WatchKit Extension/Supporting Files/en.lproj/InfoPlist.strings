@@ -1,0 +1,8 @@
+/* 
+  InfoPlist.strings
+  Qibla
+
+  Created by Saeed Taheri on 10/18/20.
+  
+*/
+"NSLocationWhenInUseUsageDescription" = "Qibla needs your location for computing the direction to Mecca.";
