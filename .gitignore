@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/git,swift,xcode,macos,swiftpm,carthage,cocoapods,objective-c,swiftpackagemanager
-# Edit at https://www.gitignore.io/?templates=git,swift,xcode,macos,swiftpm,carthage,cocoapods,objective-c,swiftpackagemanager
+# Created by https://www.gitignore.io/api/git,swift,xcode,macos,carthage,cocoapods,objective-c
+# Edit at https://www.gitignore.io/?templates=git,swift,xcode,macos,carthage,cocoapods,objective-c
 
 ### Carthage ###
 # Carthage
@@ -172,14 +172,6 @@ Dependencies/
 # After new code Injection tools there's a generated folder /iOSInjectionProject
 # https://github.com/johnno1962/injectionforxcode
 
-
-### SwiftPackageManager ###
-Packages
-xcuserdata
-*.xcodeproj
-
-
-### SwiftPM ###
 
 
 ### Xcode ###
